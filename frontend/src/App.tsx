@@ -3,24 +3,53 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 
-function Task() {
-	return (
-		<>
-			<p> task </p>
-			<p> state </p>
-		</>
-	);
+enum statusT {
+  pending,
+  done,
+}
+
+interface TaskProps {
+  id: number;
+  title: string;
+  description: string;
+  status: statusT;
+}
+
+let taskt: TaskProps = {
+	id: 0,
+	title: 'hello',
+	description: 'yes',
+	status: 1
+}
+
+function Task({ data }: TaskProps) {
+	let status: string = data.status == 0 ? 'pending' : 'done';
+  return (
+    <tr>
+      <td>{data.id}</td>
+      <td>{data.title}</td>
+      <td>{data.description}</td>
+      <td>{ status }</td>
+    </tr>
+  );
 }
 
 function App() {
-	const [count, setCount] = useState(0);
+  const [tasks, setTasks] = useState(Array<Task>);
 
-	return (
-		<>
-			<Task />
-			<h1> Hello World </h1>
-		</>
-	);
+  return (
+    <>
+      <table>
+        <tr>
+          <th>id</th>
+          <th>title</th>
+          <th>description</th>
+          <th>status</th>
+        </tr>
+	<Task data={ taskt }/>
+      </table>
+    </>
+  );
 }
 
 export default App;
