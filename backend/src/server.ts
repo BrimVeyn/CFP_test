@@ -1,12 +1,16 @@
 import Fastify from "fastify";
-import routes from "./routes/tasks.routes"
+import routes from "./routes/tasks.routes";
+import cors from "@fastify/cors";
 
 const fastify = Fastify({
   logger: true,
 });
 
+fastify.register(cors, {
+  origin: "http://localhost:5173",
+});
 
-fastify.register(routes)
+fastify.register(routes);
 
 // Start the server
 const start = async () => {
@@ -20,4 +24,3 @@ const start = async () => {
 };
 
 start();
-
