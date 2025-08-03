@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import { useForm } from "react-hook-form";
 
+//If you plan on using types across your backend and frontend, you should
+//use a 'lib' or 'package' folder at the root of your project.
+//So you can import them in both your backend and frontend
+//This is a good practice, and will make your life easier
+// import { task, statusT } from "../lib/tasks";
 enum statusT {
   pending,
   done,
@@ -15,20 +18,23 @@ interface Task {
   description: string;
   status: statusT;
 }
+
 interface TaskProps {
   data: Task;
   onDelete: (id: number) => void;
 }
 
-let taskt: Task = {
-  id: 0,
-  title: "hello",
-  description: "yes",
-  status: 1,
-};
+//HACK: Seeing many errors as I opened this file, I'm guessing you've not
+//properly installed the typescript plugin for your editor
+//as well as prettier and eslint, fix this ASAP.
+//I'll leave you with the errors I got that are obvious.
+//Try to compile the website to see the errors -> npm build
+
 
 function Task({ data, onDelete }: TaskProps) {
-  let status: string = data.status == 0 ? "pending" : "done";
+	//This should be const
+  // let status: string = data.status == 0 ? "pending" : "done";
+  const status: string = data.status == 0 ? "pending" : "done";
   return (
     <tr>
       <td>{data.id}</td>
@@ -43,6 +49,8 @@ function Task({ data, onDelete }: TaskProps) {
   );
 }
 
+//You mistyped the Form props, it should be as follows
+// function Form({ uploadTask }: { uploadTask: (data: Task) => void }) {
 function Form({ uploadTask }: (data: Task) => void) {
   const {
     register,
@@ -51,8 +59,9 @@ function Form({ uploadTask }: (data: Task) => void) {
     reset,
   } = useForm();
 
+	//You cannot declare a function without specifying its parameters type
   const onSubmit = (data) => {
-    let FormTask: Task = {
+    const FormTask: Task = {
       id: -1,
       title: data.title,
       description: data.description,
@@ -65,6 +74,10 @@ function Form({ uploadTask }: (data: Task) => void) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
+			//You're mixing inline styles and css files. This is not a good practice.
+			//Either you do inline styles with Tailwind (recommended), its modern css and 
+			//pretty elegant. Either you define every css property in a css file and import it.
+			//This is not mandatory but, mixing both makes you look amateur.
       style={{
         width: "100%",
         maxWidth: "500px",
@@ -165,20 +178,28 @@ function App() {
       .then((data) => {
         console.log(data.id);
         payload.id = data.id;
-        const newTasks = tasks.slice(); // copy
-        newTasks.push(payload); // add
-        setTasks(newTasks);
+				//This is not needed, you can just use the spread operator
+        // const newTasks = tasks.slice(); // copy
+        // newTasks.push(payload); // add
+        // setTasks(newTasks);
+				// Notice that react setState can take an optional callback
+				// This alswo guarantees that the state is up to date when its modified
+				// the manner you previously used can cause bugs in case of race conditions
+				setTasks((prevTasks) => [...prevTasks, payload]);
       });
   };
 
   const removeTask = (id: number) => {
     fetch("http://localhost:3000/task/" + id, { method: "DELETE" })
       .then((response) => response.text())
-      .then((data) => {
+      .then(() => {
         setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
       });
   };
 
+	//You shouldn't be fetching datas in a useEffect, its not a good practice
+	//investigate in Tanstack Query, also called react-query.
+	//For this dummy project, you can use the useEffect to fetch the tasks, its ok
   useEffect(() => {
     fetch("http://localhost:3000/tasks", {
       method: "GET",

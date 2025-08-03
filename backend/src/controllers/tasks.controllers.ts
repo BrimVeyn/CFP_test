@@ -1,23 +1,19 @@
-import { types } from "util";
 import {
-	statusT,
-	tasks,
 	task,
 	addTask,
 	getTasks,
 	taskSchema,
-	idSchema,
 	removeTask,
 } from "../services/tasks.service";
 import {
-	FastifyInstance,
-	FastifyPluginOptions,
 	FastifyReply,
 	FastifyRequest,
 } from "fastify";
-import { number } from "zod";
 
-export function retreiveTasks(req: FastifyRequest, rep: FastifyReply) {
+//Herre req is not used. Obviously its a GET method si it has no body
+//you van ommit the req parameter, or prefix it with _
+// export function retreiveTasks(rep: FastifyReply) {
+	export function retreiveTasks(_req: FastifyRequest, rep: FastifyReply) {
 	const result: Array<task> = getTasks();
 
 	// Let Fastify handle JSON + use correct charset
