@@ -51,3 +51,12 @@ export function removeTask(id: number) {
 		throw new Error("Wrong id");
 	}
 }
+
+const taskt: task = {
+	id: 0,
+	title: 'titre',
+	description: ' this is a description',
+	status: 0,
+}
+
+tasks.set(0, taskt);
