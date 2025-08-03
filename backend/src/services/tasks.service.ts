@@ -31,7 +31,7 @@ export function addTask(t: task): number {
 	t.id = id_max;
 	tasks.set(t.id, t);
 	id_max++;
-	return 1;
+	return t.id;
 }
 
 export function getTasks(): Array<task> {
@@ -52,11 +52,3 @@ export function removeTask(id: number) {
 	}
 }
 
-const taskt: task = {
-	id: 0,
-	title: 'titre',
-	description: ' this is a description',
-	status: 0,
-}
-
-tasks.set(0, taskt);

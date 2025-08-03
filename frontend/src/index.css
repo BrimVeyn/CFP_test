@@ -66,3 +66,27 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+#root {
+  max-width: 800px; /* or whatever max width fits your design */
+  margin: 0 auto; /* center horizontally */
+  padding: 0 16px; /* some horizontal padding */
+  box-sizing: border-box;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed; /* important! fixes column widths */
+  border-collapse: collapse;
+  word-wrap: break-word; /* wrap long words */
+  border: "5px solid #333";
+}
+
+input {
+  padding: "10px 16px";
+  backgroundcolor: "#007bff";
+  color: "white";
+  border: "none";
+  borderradius: "4px";
+  cursor: "pointer";
+}
